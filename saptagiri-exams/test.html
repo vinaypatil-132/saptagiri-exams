@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Connection - Saptagiri Exams</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">🔧 System Test Page</h1>
+        
+        <div class="space-y-6">
+            <!-- Connection Test -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Supabase Connection Test</h2>
+                <button onclick="testConnection()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Test Connection
+                </button>
+                <div id="connectionResult" class="mt-4 p-3 rounded-lg hidden"></div>
+            </div>
+
+            <!-- Database Test -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Database Test</h2>
+                <button onclick="testDatabase()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    Test Database
+                </button>
+                <div id="databaseResult" class="mt-4 p-3 rounded-lg hidden"></div>
+            </div>
+
+            <!-- Auth Test -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Authentication Test</h2>
+                <button onclick="testAuth()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    Test Auth
+                </button>
+                <div id="authResult" class="mt-4 p-3 rounded-lg hidden"></div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Navigation Test</h2>
+                <div class="space-y-2">
+                    <a href="index.html" class="block bg-gray-100 hover:bg-gray-200 p-3 rounded-lg transition-colors">
+                        🏠 Go to Landing Page (index.html)
+                    </a>
+                    <a href="dashboard.html" class="block bg-gray-100 hover:bg-gray-200 p-3 rounded-lg transition-colors">
+                        📊 Go to Student Dashboard (dashboard.html)
+                    </a>
+                    <a href="admin.html" class="block bg-gray-100 hover:bg-gray-200 p-3 rounded-lg transition-colors">
+                        👨‍💼 Go to Admin Panel (admin.html)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase, auth, database } from './supabase.js'
+
+        // Test Supabase connection
+        window.testConnection = async () => {
+            const resultDiv = document.getElementById('connectionResult')
+            resultDiv.className = 'mt-4 p-3 rounded-lg'
+            resultDiv.classList.remove('hidden')
+            
+            try {
+                // Test basic connection
+                const { data, error } = await supabase.from('exams').select('count').limit(1)
+                
+                if (error) throw error
+                
+                resultDiv.className = 'mt-4 p-3 rounded-lg bg-green-100 text-green-800 border border-green-300'
+                resultDiv.innerHTML = `
+                    ✅ <strong>Connection Successful!</strong><br>
+                    Supabase is connected and responding.<br>
+                    <small>Response time: ${Date.now() - performance.now()}ms</small>
+                `
+            } catch (error) {
+                resultDiv.className = 'mt-4 p-3 rounded-lg bg-red-100 text-red-800 border border-red-300'
+                resultDiv.innerHTML = `
+                    ❌ <strong>Connection Failed!</strong><br>
+                    Error: ${error.message}<br>
+                    <small>Check your Supabase configuration in supabase.js</small>
+                `
+            }
+        }
+
+        // Test database functionality
+        window.testDatabase = async () => {
+            const resultDiv = document.getElementById('databaseResult')
+            resultDiv.className = 'mt-4 p-3 rounded-lg'
+            resultDiv.classList.remove('hidden')
+            
+            try {
+                // Test getting exams
+                const { data: exams, error: examsError } = await database.getExams()
+                if (examsError) throw examsError
+                
+                // Test getting questions (if any exams exist)
+                let questionsResult = 'No exams to test questions'
+                if (exams && exams.length > 0) {
+                    const { data: questions, error: questionsError } = await database.getExamQuestions(exams[0].id)
+                    if (questionsError) throw questionsError
+                    questionsResult = `Found ${questions?.length || 0} questions in first exam`
+                }
+                
+                resultDiv.className = 'mt-4 p-3 rounded-lg bg-green-100 text-green-800 border border-green-300'
+                resultDiv.innerHTML = `
+                    ✅ <strong>Database Test Successful!</strong><br>
+                    Found ${exams?.length || 0} exams<br>
+                    ${questionsResult}
+                `
+            } catch (error) {
+                resultDiv.className = 'mt-4 p-3 rounded-lg bg-red-100 text-red-800 border border-red-300'
+                resultDiv.innerHTML = `
+                    ❌ <strong>Database Test Failed!</strong><br>
+                    Error: ${error.message}<br>
+                    <small>Check your database schema and RLS policies</small>
+                `
+            }
+        }
+
+        // Test authentication
+        window.testAuth = async () => {
+            const resultDiv = document.getElementById('authResult')
+            resultDiv.className = 'mt-4 p-3 rounded-lg'
+            resultDiv.classList.remove('hidden')
+            
+            try {
+                // Test getting current user
+                const { user, error } = await auth.getCurrentUser()
+                
+                if (error) throw error
+                
+                if (user) {
+                    resultDiv.className = 'mt-4 p-3 rounded-lg bg-blue-100 text-blue-800 border border-blue-300'
+                    resultDiv.innerHTML = `
+                        ℹ️ <strong>User is logged in!</strong><br>
+                        Email: ${user.email}<br>
+                        ID: ${user.id.substring(0, 8)}...
+                    `
+                } else {
+                    resultDiv.className = 'mt-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 border border-yellow-300'
+                    resultDiv.innerHTML = `
+                        ⚠️ <strong>No user logged in</strong><br>
+                        Authentication system is working, but no active session.<br>
+                        <small>This is normal for new visitors</small>
+                    `
+                }
+            } catch (error) {
+                resultDiv.className = 'mt-4 p-3 rounded-lg bg-red-100 text-red-800 border border-red-300'
+                resultDiv.innerHTML = `
+                    ❌ <strong>Authentication Test Failed!</strong><br>
+                    Error: ${error.message}<br>
+                    <small>Check your Supabase auth configuration</small>
+                `
+            }
+        }
+
+        // Auto-run connection test on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testConnection()
+            }, 1000)
+        })
+    </script>
+</body>
+</html>
