@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Saptagiri Exams</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce-in': 'bounceIn 0.6s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.3)', opacity: '0' },
+                            '50%': { transform: 'scale(1.05)' },
+                            '70%': { transform: 'scale(0.9)' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Saptagiri Exams</h1>
+                        <p class="text-sm text-gray-600">Admin Panel</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <span id="adminName" class="text-gray-700 font-medium text-sm sm:text-base">Admin</span>
+                    <button onclick="logout()" class="bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Section -->
+        <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white mb-8 animate-fade-in">
+            <h2 class="text-3xl font-bold mb-2">Welcome, <span id="welcomeAdminName">Administrator</span>! 👨‍💼</h2>
+            <p class="text-xl opacity-90">Manage exams, evaluate submissions, and publish results for your students.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-lg animate-slide-up">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Exams</p>
+                        <p id="totalExams" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-lg animate-slide-up cursor-pointer hover:shadow-xl transition-all" onclick="showStudentsModal()">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Students</p>
+                        <p id="totalStudents" class="text-2xl font-bold text-gray-900">0</p>
+                        <p class="text-xs text-blue-600 mt-1">Click to view list</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-lg animate-slide-up">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Pending Evaluations</p>
+                        <p id="pendingEvaluations" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-lg animate-slide-up">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Published Results</p>
+                        <p id="publishedResults" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
+            <button onclick="showAddExamModal()" class="bg-blue-600 text-white p-6 rounded-2xl shadow-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1">
+                <div class="text-center">
+                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold">Add New Exam</h3>
+                    <p class="text-blue-100 mt-2">Create a new examination</p>
+                </div>
+            </button>
+
+            <button onclick="showAddQuestionModal()" class="bg-green-600 text-white p-6 rounded-2xl shadow-lg hover:bg-green-700 transition-all transform hover:-translate-y-1">
+                <div class="text-center">
+                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold">Add Questions</h3>
+                    <p class="text-green-100 mt-2">Add questions to exams</p>
+                </div>
+            </button>
+
+            <button onclick="showEvaluationsModal()" class="bg-purple-600 text-white p-6 rounded-2xl shadow-lg hover:bg-purple-700 transition-all transform hover:-translate-y-1">
+                <div class="text-center">
+                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold">Evaluate Submissions</h3>
+                    <p class="text-purple-100 mt-2">Review and grade exams</p>
+                </div>
+            </button>
+        </div>
+
+        <!-- Recent Submissions -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-slide-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Recent Submissions</h3>
+                <button onclick="showEvaluationsModal()" class="text-blue-600 hover:text-blue-800 font-medium">
+                    View All →
+                </button>
+            </div>
+            <div id="recentSubmissions" class="space-y-4">
+                <!-- Submissions will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Exam Management -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-slide-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Exam Management</h3>
+                <button onclick="showAddExamModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    + Add Exam
+                </button>
+            </div>
+            <div id="examsList" class="space-y-4">
+                <!-- Exams will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Questions Management -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-slide-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Questions Management</h3>
+                <button onclick="showAddQuestionModal()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    + Add Questions
+                </button>
+            </div>
+            <div id="questionsList" class="space-y-4">
+                <!-- Questions will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Students Management -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-slide-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Students Management</h3>
+                <div class="text-sm text-gray-600">
+                    Manage student profiles and personal information
+                </div>
+            </div>
+            <div id="studentsManagementList" class="space-y-4">
+                <!-- Students management will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Exam Modal -->
+    <div id="addExamModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Add New Exam</h3>
+                    <button onclick="hideAddExamModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <form id="addExamForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Exam Title</label>
+                        <input type="text" id="examTitle" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="examDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
+                            <input type="number" id="examDuration" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Total Marks</label>
+                            <input type="number" id="examMarks" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        Create Exam
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Exam Modal -->
+    <div id="editExamModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Edit Exam</h3>
+                    <button onclick="hideEditExamModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <form id="editExamForm" class="space-y-4">
+                    <input type="hidden" id="editExamId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Exam Title</label>
+                        <input type="text" id="editExamTitle" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="editExamDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
+                            <input type="number" id="editExamDuration" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Total Marks</label>
+                            <input type="number" id="editExamMarks" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        Update Exam
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Question Modal -->
+    <div id="addQuestionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900">Add Questions</h3>
+                        <p class="text-sm text-gray-600">Add single or multiple questions to exam</p>
+                    </div>
+                    <button onclick="hideAddQuestionModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Mode Selection -->
+                <div class="flex mb-6 bg-gray-100 p-1 rounded-lg">
+                    <button type="button" id="singleModeBtn" onclick="switchQuestionMode('single')" class="flex-1 py-2 px-2 sm:px-4 rounded-lg bg-blue-600 text-white font-medium transition-colors text-sm sm:text-base">
+                        Single Question
+                    </button>
+                    <button type="button" id="bulkModeBtn" onclick="switchQuestionMode('bulk')" class="flex-1 py-2 px-2 sm:px-4 rounded-lg text-gray-700 font-medium transition-colors text-sm sm:text-base">
+                        Bulk Questions
+                    </button>
+                </div>
+
+                <!-- Single Question Mode -->
+                <div id="singleQuestionMode">
+                    <form id="addQuestionForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Select Exam</label>
+                            <select id="questionExamId" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Choose an exam...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
+                            <textarea id="questionText" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Question Type</label>
+                                <select id="questionType" required onchange="toggleQuestionOptions()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select type...</option>
+                                    <option value="multiple_choice">Multiple Choice</option>
+                                    <option value="true_false">True/False</option>
+                                    <option value="essay">Essay</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Marks</label>
+                                <input type="number" id="questionMarks" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                        </div>
+                        
+                        <!-- Multiple Choice Options -->
+                        <div id="multipleChoiceOptions" class="hidden space-y-3">
+                            <label class="block text-sm font-medium text-gray-700">Options (one per line)</label>
+                            <textarea id="questionOptions" rows="4" placeholder="Option 1&#10;Option 2&#10;Option 3&#10;Option 4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer</label>
+                                <input type="text" id="correctAnswer" placeholder="Enter the correct option text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                        </div>
+                        
+                        <!-- True/False Options -->
+                        <div id="trueFalseOptions" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer</label>
+                                <select id="trueFalseAnswer" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select...</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                            Add Question
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Bulk Questions Mode -->
+                <div id="bulkQuestionMode" class="hidden">
+                    <form id="addBulkQuestionsForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Select Exam</label>
+                            <select id="bulkQuestionExamId" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Choose an exam...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-900 mb-2">Bulk Import Format</h4>
+                            <p class="text-sm text-blue-700 mb-3">Use the following format for each question (one question per line):</p>
+                            <code class="text-xs bg-white p-2 rounded block text-gray-800">
+                                [TYPE]|[QUESTION]|[OPTIONS_OR_ANSWER]|[CORRECT_ANSWER]|[MARKS]<br>
+                                Example: multiple_choice|What is 2+2?|A.3,B.4,C.5,D.6|B.4|5
+                            </code>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Questions (one per line)</label>
+                            <textarea id="bulkQuestions" required rows="10" placeholder="multiple_choice|What is the capital of France?|A.London,B.Paris,C.Rome,D.Madrid|B.Paris|5&#10;true_false|The earth is flat|true,false|false|3&#10;essay|Explain photosynthesis||high-quality explanation expected|10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                            Add All Questions
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div id="editStudentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Edit Student Profile</h3>
+                    <button onclick="hideEditStudentModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <form id="editStudentForm" class="space-y-4">
+                    <input type="hidden" id="editStudentId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="editStudentName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="editStudentEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number (Optional)</label>
+                        <input type="tel" id="editStudentPhone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Address (Optional)</label>
+                        <textarea id="editStudentAddress" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        Update Student Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Question Modal -->
+    <div id="editQuestionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Edit Question</h3>
+                    <button onclick="hideEditQuestionModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <form id="editQuestionForm" class="space-y-4">
+                    <input type="hidden" id="editQuestionId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Exam</label>
+                        <input type="text" id="editQuestionExamTitle" readonly class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
+                        <textarea id="editQuestionText" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Question Type</label>
+                            <select id="editQuestionType" required onchange="toggleEditQuestionOptions()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="multiple_choice">Multiple Choice</option>
+                                <option value="true_false">True/False</option>
+                                <option value="essay">Essay</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Marks</label>
+                            <input type="number" id="editQuestionMarks" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <!-- Edit Multiple Choice Options -->
+                    <div id="editMultipleChoiceOptions" class="hidden space-y-3">
+                        <label class="block text-sm font-medium text-gray-700">Options (one per line)</label>
+                        <textarea id="editQuestionOptions" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer</label>
+                            <input type="text" id="editCorrectAnswer" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <!-- Edit True/False Options -->
+                    <div id="editTrueFalseOptions" class="hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer</label>
+                            <select id="editTrueFalseAnswer" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        Update Question
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students List Modal -->
+    <div id="studentsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-screen overflow-y-auto p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">All Students</h3>
+                    <button onclick="hideStudentsModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="studentsList" class="space-y-4">
+                    <!-- Students list will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluations Modal -->
+    <div id="evaluationsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full mx-4 max-h-screen overflow-y-auto p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Evaluate Submissions</h3>
+                    <button onclick="hideEvaluationsModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="evaluationsList" class="space-y-4">
+                    <!-- Submissions for evaluation will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div id="resetPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-2 sm:mx-4 p-4 sm:p-6 animate-bounce-in">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900">Reset Student Password</h3>
+                        <p class="text-sm text-gray-600 mt-1">Set a temporary password for the student</p>
+                    </div>
+                    <button onclick="hideResetPasswordModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <form id="resetPasswordForm" class="space-y-4">
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-yellow-600 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="text-sm font-medium text-yellow-800">Security Notice</h4>
+                                <p class="text-sm text-yellow-700 mt-1">The student will be forced to change this password on their next login.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Student</label>
+                        <input type="text" id="resetPasswordStudentInfo" readonly class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600">
+                        <input type="hidden" id="resetPasswordStudentEmail">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Temporary Password</label>
+                        <div class="relative">
+                            <input type="text" id="tempPassword" required minlength="6" class="w-full px-3 py-2 pr-24 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <button type="button" onclick="generateTempPassword()" class="absolute right-2 top-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs rounded transition-colors">
+                                Generate
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Minimum 6 characters. Click Generate for a secure random password.</p>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button type="button" onclick="hideResetPasswordModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold">
+                            Cancel
+                        </button>
+                        <button type="submit" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-semibold">
+                            Reset Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+        </div>
+    </div>
+
+    <script type="module" src="./admin.js"></script>
+</body>
+</html>
