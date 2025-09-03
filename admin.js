@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { auth, database, security, utils } from './supabase.js'
+=======
+import { auth, database, utils } from './supabase.js'
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 
 // Global variables
 let currentUser = null
@@ -6,10 +10,13 @@ let adminProfile = null
 
 // Initialize admin panel
 document.addEventListener('DOMContentLoaded', async () => {
+<<<<<<< HEAD
     // Initialize security measures
     auth.setupSecurityHandlers()
     security.enableAll()
     
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     await checkAuth()
     if (currentUser) {
         await loadAdminPanel()
@@ -74,9 +81,13 @@ const loadAdminPanel = async () => {
         await Promise.all([
             loadStats(),
             loadRecentSubmissions(),
+<<<<<<< HEAD
             loadExams(),
             loadQuestions(),
             loadStudentsManagement()
+=======
+            loadExams()
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
         ])
     } catch (error) {
         console.error('Error loading admin panel:', error)
@@ -189,6 +200,7 @@ const loadExams = async () => {
     }
 }
 
+<<<<<<< HEAD
 // Load questions
 const loadQuestions = async () => {
     try {
@@ -212,6 +224,8 @@ const loadQuestions = async () => {
     }
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Display exams
 const displayExams = (exams) => {
     const examsList = document.getElementById('examsList')
@@ -258,16 +272,23 @@ const displayExams = (exams) => {
                         </span>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+=======
+                <div class="flex space-x-2">
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                     <button onclick="editExam('${exam.id}')" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors text-sm">
                         Edit
                     </button>
                     <button onclick="toggleExamStatus('${exam.id}', ${exam.is_active})" class="${exam.is_active ? 'bg-yellow-600' : 'bg-green-600'} text-white px-3 py-1 rounded-lg hover:${exam.is_active ? 'bg-yellow-700' : 'bg-green-700'} transition-colors text-sm">
                         ${exam.is_active ? 'Deactivate' : 'Activate'}
                     </button>
+<<<<<<< HEAD
                     <button onclick="deleteExam('${exam.id}')" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition-colors text-sm">
                         Delete
                     </button>
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                 </div>
             </div>
         </div>
@@ -276,6 +297,7 @@ const displayExams = (exams) => {
     examsList.innerHTML = examsHTML
 }
 
+<<<<<<< HEAD
 // Display questions
 const displayQuestions = (questions) => {
     const questionsList = document.getElementById('questionsList')
@@ -439,6 +461,8 @@ const displayStudentsManagement = (students) => {
     studentsManagementList.innerHTML = studentsHTML
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Modal functions
 window.showAddExamModal = () => {
     document.getElementById('addExamModal').classList.remove('hidden')
@@ -469,6 +493,7 @@ window.hideEvaluationsModal = () => {
     document.getElementById('evaluationsModal').classList.add('hidden')
 }
 
+<<<<<<< HEAD
 // Students Modal functions
 window.showStudentsModal = async () => {
     document.getElementById('studentsModal').classList.remove('hidden')
@@ -558,6 +583,8 @@ const hideEditQuestionOptions = () => {
     document.getElementById('editTrueFalseOptions').classList.add('hidden')
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Toggle question options based on type
 window.toggleQuestionOptions = () => {
     const questionType = document.getElementById('questionType').value
@@ -597,6 +624,7 @@ const loadExamOptions = async () => {
     }
 }
 
+<<<<<<< HEAD
 // Load exam options for bulk question form
 const loadBulkExamOptions = async () => {
     try {
@@ -746,6 +774,8 @@ const loadStudentForEdit = async (studentId) => {
     }
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Load evaluations
 const loadEvaluations = async () => {
     try {
@@ -969,6 +999,7 @@ document.getElementById('addQuestionForm').addEventListener('submit', async (e) 
     }
 })
 
+<<<<<<< HEAD
 // Edit exam form submission
 document.getElementById('editExamForm').addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -1173,6 +1204,8 @@ document.getElementById('editStudentForm').addEventListener('submit', async (e) 
     }
 })
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Logout function
 window.logout = async () => {
     try {
@@ -1196,6 +1229,7 @@ const hideLoading = () => {
     document.getElementById('loadingSpinner').classList.add('hidden')
 }
 
+<<<<<<< HEAD
 // Edit exam function
 window.editExam = (examId) => {
     showEditExamModal(examId)
@@ -1427,6 +1461,8 @@ document.getElementById('resetPasswordForm').addEventListener('submit', async (e
     }
 })
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 
 
 
