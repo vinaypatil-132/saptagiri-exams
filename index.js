@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { auth, security, utils } from './supabase.js'
+=======
+import { auth, utils } from './supabase.js'
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 
 // Modal functions
 window.showLoginModal = () => {
@@ -22,10 +26,13 @@ window.showAdminLogin = () => {
     document.getElementById('adminLoginModal').classList.remove('hidden')
 }
 
+<<<<<<< HEAD
 window.showAdminLoginModal = () => {
     document.getElementById('adminLoginModal').classList.remove('hidden')
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 window.hideAdminLoginModal = () => {
     document.getElementById('adminLoginModal').classList.add('hidden')
 }
@@ -45,6 +52,7 @@ window.switchToStudentLogin = () => {
     showLoginModal()
 }
 
+<<<<<<< HEAD
 // Forgot Password functions
 window.showForgotPasswordModal = () => {
     hideLoginModal()
@@ -60,6 +68,8 @@ window.switchBackToLogin = () => {
     showLoginModal()
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Show/hide loading
 const showLoading = () => {
     document.getElementById('loadingSpinner').classList.remove('hidden')
@@ -74,8 +84,13 @@ const addModals = () => {
     const modalHTML = `
         <!-- Login Modal -->
         <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+<<<<<<< HEAD
             <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
                 <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-2 p-4 sm:p-6 animate-bounce-in">
+=======
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-bounce-in">
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-gray-900">Student Login</h3>
                         <button onclick="hideLoginModal()" class="text-gray-400 hover:text-gray-600">
@@ -100,21 +115,38 @@ const addModals = () => {
                     </form>
                     
                     <div class="mt-4 text-center">
+<<<<<<< HEAD
                         <button onclick="showForgotPasswordModal()" class="text-sm text-orange-600 hover:text-orange-800 font-medium mb-3 block mx-auto">
                             🔑 Forgot Password? Contact Admin
                         </button>
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                         <p class="text-sm text-gray-600">Don't have an account? 
                             <button onclick="switchToRegister()" class="text-blue-600 hover:text-blue-800 font-medium">Register here</button>
                         </p>
                     </div>
+<<<<<<< HEAD
+=======
+                    
+                    <div class="mt-4 text-center">
+                        <button onclick="showAdminLogin()" class="text-sm text-gray-500 hover:text-gray-700">
+                            Admin Login
+                        </button>
+                    </div>
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                 </div>
             </div>
         </div>
 
         <!-- Register Modal -->
         <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+<<<<<<< HEAD
             <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
                 <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-2 p-4 sm:p-6 animate-bounce-in">
+=======
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-bounce-in">
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-gray-900">Student Registration</h3>
                         <button onclick="hideRegisterModal()" class="text-gray-400 hover:text-gray-600">
@@ -157,8 +189,13 @@ const addModals = () => {
 
         <!-- Admin Login Modal -->
         <div id="adminLoginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+<<<<<<< HEAD
             <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
                 <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-2 p-4 sm:p-6 animate-bounce-in">
+=======
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-bounce-in">
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-gray-900">Admin Login</h3>
                         <button onclick="hideAdminLoginModal()" class="text-gray-400 hover:text-gray-600">
@@ -190,6 +227,7 @@ const addModals = () => {
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
 
         <!-- Forgot Password Modal -->
         <div id="forgotPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
@@ -247,6 +285,8 @@ const addModals = () => {
                 </div>
             </div>
         </div>
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     `
     
     document.body.insertAdjacentHTML('beforeend', modalHTML)
@@ -254,9 +294,12 @@ const addModals = () => {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+<<<<<<< HEAD
     // Initialize basic security (lighter for home page)
     auth.setupSecurityHandlers()
     
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     addModals()
     setupEventListeners()
 })

@@ -8,7 +8,11 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 // Create Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+<<<<<<< HEAD
 // Enhanced Security functions
+=======
+// Security functions
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 export const security = {
   // Disable right-click
   disableRightClick: () => {
@@ -28,6 +32,7 @@ export const security = {
     document.addEventListener('cut', (e) => e.preventDefault())
   },
 
+<<<<<<< HEAD
   // Enhanced keyboard shortcuts protection
   disableKeyboardShortcuts: () => {
     document.addEventListener('keydown', (e) => {
@@ -41,10 +46,24 @@ export const security = {
       ) {
         e.preventDefault()
         return false
+=======
+  // Disable keyboard shortcuts
+  disableKeyboardShortcuts: () => {
+    document.addEventListener('keydown', (e) => {
+      // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+        (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+        (e.ctrlKey && e.key === 'u')
+      ) {
+        e.preventDefault()
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
       }
     })
   },
 
+<<<<<<< HEAD
   // Enhanced screen switching detection
   disableScreenSwitching: () => {
     let lastFocusTime = Date.now()
@@ -53,21 +72,35 @@ export const security = {
     window.addEventListener('blur', () => {
       lastFocusTime = Date.now()
       switchCount++
+=======
+  // Disable screen switching (Alt+Tab detection)
+  disableScreenSwitching: () => {
+    let lastFocusTime = Date.now()
+    
+    window.addEventListener('blur', () => {
+      lastFocusTime = Date.now()
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     })
     
     window.addEventListener('focus', () => {
       const timeDiff = Date.now() - lastFocusTime
       if (timeDiff > 1000) { // More than 1 second
+<<<<<<< HEAD
         if (switchCount > 3) {
           alert('Multiple window switches detected. For security, you will be logged out.')
           auth.logout()
           return
         }
         alert(`Warning: Switching away from window is not allowed! (${switchCount}/3 warnings)`)
+=======
+        // User switched away from window
+        alert('Warning: Switching away from exam window is not allowed!')
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
       }
     })
   },
 
+<<<<<<< HEAD
   // Prevent console access
   preventConsoleAccess: () => {
     // Disable console methods
@@ -149,6 +182,8 @@ export const security = {
     return Math.random().toString(36).substring(2) + Date.now().toString(36)
   },
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
   // Enable all security measures
   enableAll: () => {
     security.disableRightClick()
@@ -156,6 +191,7 @@ export const security = {
     security.disableCopyPaste()
     security.disableKeyboardShortcuts()
     security.disableScreenSwitching()
+<<<<<<< HEAD
     security.preventConsoleAccess()
     security.preventSourceViewing()
     
@@ -166,6 +202,8 @@ export const security = {
     } catch (error) {
       console.log('CSP headers not set')
     }
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
   }
 }
 
@@ -260,6 +298,7 @@ export const auth = {
         throw profileError
       }
       
+<<<<<<< HEAD
       // Check if password change is required
       const needsPasswordChange = profile.needs_password_change === true
       
@@ -272,6 +311,9 @@ export const auth = {
         error: null, 
         needsPasswordChange 
       }
+=======
+      return { data: { ...data, profile }, error: null }
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     } catch (error) {
       console.error('Login error:', error)
       return { data: null, error }
@@ -299,16 +341,20 @@ export const auth = {
         throw new Error('Access denied. Admin privileges required.')
       }
       
+<<<<<<< HEAD
       // Trigger login success event for navigation handling
       const loginSuccessEvent = new Event('loginSuccess')
       window.dispatchEvent(loginSuccessEvent)
       
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
       return { data: { ...data, admin: adminCheck }, error: null }
     } catch (error) {
       return { data: null, error }
     }
   },
 
+<<<<<<< HEAD
   // Enhanced Logout - Clear all sessions
   logout: async () => {
     try {
@@ -331,12 +377,20 @@ export const auth = {
         window.location.reload(true)
       }, 100)
       
+=======
+  // Logout
+  logout: async () => {
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) throw error
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
       return { error: null }
     } catch (error) {
       return { error }
     }
   },
 
+<<<<<<< HEAD
   // Setup security handlers (fixed to not interfere with login)
   setupSecurityHandlers: () => {
     // Flag to prevent logout during navigation after successful login
@@ -429,6 +483,8 @@ export const auth = {
     markInactive()
   },
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
   // Get current user
   getCurrentUser: async () => {
     try {
@@ -787,6 +843,7 @@ export const database = {
     } catch (error) {
       return { data: null, error }
     }
+<<<<<<< HEAD
   },
 
   // Admin: Update exam
@@ -1177,6 +1234,8 @@ export const database = {
       }
       return { password }
     }
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
   }
 }
 

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { auth, database, security, utils } from './supabase.js'
+=======
+import { auth, database, utils } from './supabase.js'
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 
 // Global variables
 let currentUser = null
@@ -6,14 +10,18 @@ let userProfile = null
 
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', async () => {
+<<<<<<< HEAD
     // Initialize security measures
     auth.setupSecurityHandlers()
     security.enableAll()
     
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     await checkAuth()
     if (currentUser) {
         await loadDashboard()
     }
+<<<<<<< HEAD
 
     // Password change form handler (DISABLED - will only work if modal exists)
     const form = document.getElementById('passwordChangeForm')
@@ -55,6 +63,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 // Check authentication (NO PASSWORD CHANGE CHECK)
+=======
+})
+
+// Check authentication
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 const checkAuth = async () => {
     try {
         const { user, error } = await auth.getCurrentUser()
@@ -72,12 +85,18 @@ const checkAuth = async () => {
             return
         }
         
+<<<<<<< HEAD
         // Get user profile - NO PASSWORD CHECK
         await loadUserProfile()
         
         // REMOVED: All password change checking logic
         console.log('✅ Login successful, proceeding to dashboard (no password checks)')
         
+=======
+        // Get user profile
+        await loadUserProfile()
+        
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     } catch (error) {
         console.error('Auth error:', error)
         window.location.href = 'index.html'
@@ -116,7 +135,10 @@ const loadDashboard = async () => {
             loadExams(),
             loadSubmissions(),
             loadResults(),
+<<<<<<< HEAD
             loadProfile(),
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
             updateStats()
         ])
     } catch (error) {
@@ -270,16 +292,25 @@ const displayResults = (results) => {
             <div class="text-center py-8">
                 <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<<<<<<< HEAD
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900 mb-2">No Results Yet</h3>
                 <p class="text-gray-500">Complete exams to see your results here.</p>
+=======
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No Results Yet</h3>
+                <p class="text-gray-500">Your exam results will appear here once evaluated.</p>
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
             </div>
         `
         return
     }
     
+<<<<<<< HEAD
     const resultsHTML = results.slice(0, 5).map(result => {
         const date = new Date(result.published_at).toLocaleDateString()
         const percentage = Math.round(result.percentage)
@@ -302,6 +333,43 @@ const displayResults = (results) => {
                         <span class="px-3 py-1 rounded-full text-sm font-medium ${gradeColor}">
                             ${result.grade}
                         </span>
+=======
+    const resultsHTML = results.map(result => {
+        const date = new Date(result.published_at).toLocaleDateString()
+        const percentage = result.percentage
+        const grade = result.grade
+        
+        let gradeColor = 'bg-gray-100 text-gray-800'
+        if (grade === 'A+' || grade === 'A') gradeColor = 'bg-green-100 text-green-800'
+        else if (grade === 'B+' || grade === 'B') gradeColor = 'bg-blue-100 text-blue-800'
+        else if (grade === 'C') gradeColor = 'bg-yellow-100 text-yellow-800'
+        else if (grade === 'D') gradeColor = 'bg-orange-100 text-orange-800'
+        else if (grade === 'F') gradeColor = 'bg-red-100 text-red-800'
+        
+        return `
+            <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-900">${result.exams.title}</h4>
+                        <p class="text-sm text-gray-600">Published: ${date}</p>
+                    </div>
+                    <span class="px-4 py-2 rounded-full text-sm font-bold ${gradeColor}">
+                        Grade: ${grade}
+                    </span>
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-sm text-gray-600">Total Marks</p>
+                        <p class="text-2xl font-bold text-gray-900">${result.total_marks}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Obtained</p>
+                        <p class="text-2xl font-bold text-blue-600">${result.obtained_marks}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Percentage</p>
+                        <p class="text-2xl font-bold text-green-600">${percentage.toFixed(1)}%</p>
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
                     </div>
                 </div>
             </div>
@@ -311,6 +379,7 @@ const displayResults = (results) => {
     resultsList.innerHTML = resultsHTML
 }
 
+<<<<<<< HEAD
 // Load profile
 const loadProfile = async () => {
     try {
@@ -432,6 +501,8 @@ const displayProfile = (profile) => {
     profileSection.innerHTML = profileHTML
 }
 
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
 // Update statistics
 const updateStats = async () => {
     try {
@@ -443,6 +514,7 @@ const updateStats = async () => {
         
         const availableExams = exams.data?.length || 0
         const completedExams = submissions.data?.length || 0
+<<<<<<< HEAD
         const studentResults = results.data || []
         
         // Calculate average score from results (not filtered by is_evaluated since results table only contains evaluated results)
@@ -450,10 +522,20 @@ const updateStats = async () => {
         if (studentResults.length > 0) {
             const totalPercentage = studentResults.reduce((sum, result) => sum + result.percentage, 0)
             averageScore = totalPercentage / studentResults.length
+=======
+        const evaluatedResults = results.data?.filter(r => r.is_evaluated) || []
+        
+        // Calculate average score
+        let averageScore = 0
+        if (evaluatedResults.length > 0) {
+            const totalPercentage = evaluatedResults.reduce((sum, result) => sum + result.percentage, 0)
+            averageScore = totalPercentage / evaluatedResults.length
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
         }
         
         // Find best grade
         let bestGrade = '-'
+<<<<<<< HEAD
         let bestPercentage = 0
         if (studentResults.length > 0) {
             const bestResult = studentResults.reduce((best, current) => 
@@ -461,6 +543,13 @@ const updateStats = async () => {
             )
             bestGrade = bestResult.grade
             bestPercentage = bestResult.percentage
+=======
+        if (evaluatedResults.length > 0) {
+            const bestResult = evaluatedResults.reduce((best, current) => 
+                current.percentage > best.percentage ? current : best
+            )
+            bestGrade = bestResult.grade
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
         }
         
         // Update UI
@@ -469,6 +558,7 @@ const updateStats = async () => {
         document.getElementById('averageScore').textContent = `${averageScore.toFixed(1)}%`
         document.getElementById('bestGrade').textContent = bestGrade
         
+<<<<<<< HEAD
         // Add tooltips or additional info if needed
         console.log('Stats updated:', {
             availableExams,
@@ -478,6 +568,8 @@ const updateStats = async () => {
             bestPercentage
         })
         
+=======
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     } catch (error) {
         console.error('Error updating stats:', error)
     }
@@ -518,6 +610,7 @@ window.hideNoExamsModal = () => {
     document.getElementById('noExamsModal').classList.add('hidden')
 }
 
+<<<<<<< HEAD
 // Password change modal functions (DISABLED - but keeping for compatibility)
 const showPasswordChangeModal = () => {
     console.log('❌ Password change modal disabled - this should not be called')
@@ -528,3 +621,6 @@ const hidePasswordChangeModal = () => {
     console.log('❌ Password change modal hide called - this should not be needed')
     // Do nothing
 }
+=======
+
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b

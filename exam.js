@@ -13,6 +13,7 @@ let examStarted = false
 
 // Initialize exam
 document.addEventListener('DOMContentLoaded', async () => {
+<<<<<<< HEAD
     // Initialize enhanced security for exams
     auth.setupSecurityHandlers()
     security.enableAll()
@@ -20,6 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     await checkAuth()
     if (currentUser) {
         await loadExam()
+=======
+    await checkAuth()
+    if (currentUser) {
+        await loadExam()
+        enableSecurity()
+>>>>>>> 4acd36e60b0492681c3a96c0e76eab2890542f8b
     }
 })
 
